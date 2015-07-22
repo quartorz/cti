@@ -13,7 +13,7 @@
 
 #include <bcl/sqrt.hpp>
 
-#include <cti/cinterval.hpp>
+#include <cti/interval.hpp>
 
 namespace cti{
 	template <>
