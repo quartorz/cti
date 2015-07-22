@@ -1,0 +1,8 @@
+[1e-01,9.0000000000000003e-01]
+[1e-01,9.0000000000000003e-01] + [-4.0000000000000003e-01,3e+00] = [-3.0000000000000005e-01,3.9000000000000004e+00]
+
+cti::interval<bcl::detail::double_<false, 3602879701896397ull, -55>, bcl::detail::double_<false, 8106479329266893ull, -53> >
+cti::interval<bcl::detail::double_<false, 3602879701896397ull, -55>, bcl::detail::double_<false, 8106479329266893ull, -53> > + cti::interval<bcl::detail::double_<true, 3602879701896397ull, -53>, bcl::detail::double_<false, 6755399441055744ull, -51> > = cti::interval<bcl::detail::double_<true, 1351079888211149ull, -52>, bcl::detail::double_<false, 8782019273372468ull, -51> >
+
+[1e-01,9.0000000000000003e-01]
+[1e-01,9.0000000000000003e-01] + [-4.0000000000000003e-01,3e+00] = [-3.0000000000000005e-01,3.9000000000000004e+00]
