@@ -33,6 +33,8 @@ int main()
 	std::cout << name(x) << " + " << name(y) << " = " << name(x + y) << std::endl << std::endl;
 
 	std::cout << x.to_kv() << std::endl;
-	std::cout << x.to_kv() << " + " << y.to_kv() << " = " << x.to_kv() + y.to_kv() << std::endl;
+	std::cout << x.to_kv() << " + " << y.to_kv() << " = " << x.to_kv() + y.to_kv() << std::endl << std::endl;
+
+	std::cout << std::get<0>(x * y);
 }
 
