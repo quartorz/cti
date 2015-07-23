@@ -35,6 +35,10 @@ int main()
 	std::cout << x.to_kv() << std::endl;
 	std::cout << x.to_kv() << " + " << y.to_kv() << " = " << x.to_kv() + y.to_kv() << std::endl << std::endl;
 
-	std::cout << std::get<0>(x * y);
+	std::cout << x * y << std::endl;
+	std::cout << x.to_kv() * y.to_kv() << std::endl;
+
+	x.to_kv() + 1.0;
+	1.0 + x.to_kv();
 }
 

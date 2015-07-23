@@ -65,8 +65,6 @@ namespace cti{
 
 			double x = a * b;
 			double na = 0.0, nb = 0.0;
-			double a1 = 0.0, a2 = 0.0;
-			double b1 = 0.0, b2 = 0.0;
 
 			if(::sprout::fabs(a) > th){
 				na = a * c1;
@@ -79,8 +77,11 @@ namespace cti{
 				nb = b;
 			}
 
-			::std::tie(a1, a2) = split(na);
-			::std::tie(b1, b2) = split(nb);
+			auto sp1 = split(na);
+			double a1 = ::std::get<0>(sp1), a2 = ::std::get<1>(sp1);
+
+			auto sp2 = split(nb);
+			double b1 = ::std::get<0>(sp2), b2 = ::std::get<1>(sp2);
 
 			if(::sprout::fabs(x) > th2){
 				double y = a2 * b2 - ((((x * 0.5) - (a1 * 0.5)  * b1) * 2.0 - a2 * b1) - a1 * b2);
@@ -245,7 +246,7 @@ namespace cti{
 					return succ(r);
 				return r;
 			}else{
-				prod = twoproduct(x * c, y * c);
+				auto rod = twoproduct(x * c, y * c);
 
 				double s = ::std::get<0>(prod), s2 = ::std::get<1>(prod);
 				double t = (r * c) * c;
@@ -281,7 +282,7 @@ namespace cti{
 					return pred(r);
 				return r;
 			}else{
-				prod = twoproduct(x * c, y * c);
+				auto prod = twoproduct(x * c, y * c);
 
 				double s = ::std::get<0>(prod), s2 = ::std::get<1>(prod);
 				double t = (r * c) * c;
@@ -446,6 +447,14 @@ namespace cti{
 		static void print_down(double x, ::std::ostream &os)
 		{
 			::kv::rop<double>::print_down(x, os);
+		}
+
+		static constexpr auto whole()
+		{
+			constexpr auto infinity = ::std::numeric_limits<double>::infinity();
+			constexpr auto inf = ::bcl::encode(-infinity);
+			constexpr auto sup = ::bcl::encode(infinity);
+			return interval<BCL_DOUBLE(inf), BCL_DOUBLE(sup)>{};
 		}
 	};
 }
