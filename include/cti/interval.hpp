@@ -92,6 +92,12 @@ namespace cti{
 	}
 
 	template <typename Inf, typename Sup>
+	struct interval;
+
+	template <typename Inf1, typename Sup1, typename Inf2, typename Sup2>
+	constexpr bool overlap(interval<Inf1, Sup1>, interval<Inf2, Sup2>);
+
+	template <typename Inf, typename Sup>
 	struct interval{
 		static_assert(::std::is_same<typename Inf::value_type, typename Sup::value_type>{},
 		              "Inf and Sup must contain the same type");
@@ -338,6 +344,189 @@ namespace cti{
 
 			return interval<BCL_DOUBLE(inf), BCL_DOUBLE(sup)>{};
 		}
+
+		template <typename Inf1, typename Sup1, typename Inf2, typename Sup2>
+		friend constexpr bool operator<(interval<Inf1, Sup1>, interval<Inf2, Sup2>)
+		{
+			return Sup1::value < Inf2::value;
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+				&& !is_interval<T>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator<(interval, T)
+		{
+			return Sup::value < static_cast<value_type>(T::value);
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+				&& !is_interval<T>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator<(interval, T)
+		{
+			return static_cast<value_type>(T::value) < Inf::value;
+		}
+
+		template <typename Inf1, typename Sup1, typename Inf2, typename Sup2>
+		friend constexpr bool operator<=(interval<Inf1, Sup1>, interval<Inf2, Sup2>)
+		{
+			return Sup1::value <= Inf2::value;
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+				&& !is_interval<T>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator<=(interval, T)
+		{
+			return Sup::value <= static_cast<value_type>(T::value);
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+				&& !is_interval<T>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator<=(interval, T)
+		{
+			return static_cast<value_type>(T::value) <= Inf::value;
+		}
+
+		template <typename Inf1, typename Sup1, typename Inf2, typename Sup2>
+		friend constexpr bool operator>(interval<Inf1, Sup1>, interval<Inf2, Sup2>)
+		{
+			return Inf1::value > Sup2::value;
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator>(interval, T)
+		{
+			return Inf::value > static_cast<value_type>(T::value);
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator>(T, interval)
+		{
+			return static_cast<value_type>(T::value) > Sup::value;
+		}
+
+		template <typename Inf1, typename Sup1, typename Inf2, typename Sup2>
+		friend constexpr bool operator>=(interval<Inf1, Sup1>, interval<Inf2, Sup2>)
+		{
+			return Inf1::value >= Sup2::value;
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator>=(interval, T)
+		{
+			return Inf::value >= static_cast<value_type>(T::value);
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator>=(T, interval)
+		{
+			return static_cast<value_type>(T::value) >= Sup::value;
+		}
+
+		template <typename Inf1, typename Sup1, typename Inf2, typename Sup2>
+		friend constexpr bool operator==(interval<Inf1, Sup1>, interval<Inf2, Sup2>)
+		{
+			return Inf1::value == Sup1::value
+				&& Sup1::value == Inf2::value
+				&& Inf2::value == Sup2::value;
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator==(interval, T)
+		{
+			return Inf::value == Sup::value
+				&& Sup::value == static_cast<value_type>(T::value);
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator==(T, interval)
+		{
+			return Inf::value == Sup::value
+				&& Sup::value == static_cast<value_type>(T::value);
+		}
+
+		template <typename Inf1, typename Sup1, typename Inf2, typename Sup2>
+		friend constexpr bool operator!=(interval<Inf1, Sup1> x, interval<Inf2, Sup2> y)
+		{
+			return !overlap(x, y);
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator!=(interval x, T)
+		{
+			constexpr auto value = ::bcl::encode(T::value);
+			using y = BCL_DOUBLE(value);
+
+			return !overlap(x, y{});
+		}
+
+		template <
+			typename T,
+			::std::enable_if_t<
+				::std::is_convertible<typename T::value_type, value_type>{}
+			>* = nullptr
+		>
+		friend constexpr bool operator!=(T, interval y)
+		{
+			constexpr auto value = ::bcl::encode(T::value);
+			using x = BCL_DOUBLE(value);
+
+			return !overlap(y, x{});
+		}
+
 	};
 
 	namespace detail{
@@ -528,5 +717,23 @@ namespace cti{
 	template <typename Inf, typename Sup>
 	struct is_interval<interval<Inf, Sup>> : ::std::true_type{
 	};
+
+	template <typename Inf1, typename Sup1, typename Inf2, typename Sup2>
+	constexpr bool overlap(interval<Inf1, Sup1>, interval<Inf2, Sup2>)
+	{
+		using common_t = ::std::common_type_t<typename Inf1::type, typename Inf2::type>;
+
+		auto tmp1 = static_cast<common_t>(Inf1::value);
+
+		if(Inf2::value > tmp1)
+			tmp1 = Inf2::value;
+
+		auto tmp2 = static_cast<common_t>(Sup1::value);
+
+		if(Sup2::value < tmp2)
+			tmp2 = Sup2::value;
+
+		return tmp1 <= tmp2;
+	}
 }
 
