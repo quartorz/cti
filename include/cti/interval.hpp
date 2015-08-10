@@ -69,6 +69,9 @@ namespace cti{
 	struct is_interval : ::std::false_type{
 	};
 
+	template <typename T>
+	constexpr bool is_interval_v = is_interval<T>{};
+
 	namespace detail{
 		template <typename T>
 		constexpr ::std::pair<T, T>

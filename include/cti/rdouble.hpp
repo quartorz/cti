@@ -11,7 +11,7 @@
 #include <kv/interval.hpp>
 #include <kv/rdouble.hpp>
 
-#include <bcl/sqrt.hpp>
+#include <bcl/math/sqrt.hpp>
 
 #include <cti/interval.hpp>
 
