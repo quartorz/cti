@@ -4,6 +4,8 @@
 #include <utility>
 #include <stdexcept>
 
+#include <boost/preprocessor/facilities/overload.hpp>
+
 #include <kv/interval.hpp>
 #include <kv/rdouble.hpp>
 
@@ -740,3 +742,13 @@ namespace cti{
 	}
 }
 
+#if !defined(CTI_I) && !defined(CTI_I_1) && !defined(CTI_I_2)
+# define CTI_I_1(x) ::cti::interval<BCL_DOUBLE_T(x), BCL_DOUBLE_T(x)>
+# define CTI_I_2(x, y) ::cti::interval<BCL_DOUBLE_T(x), BCL_DOUBLE_T(y)>
+
+# if defined(_MSC_VER)
+#  define CTI_I(...) BOOST_PP_CAT(BOOST_PP_OVERLOAD(CTI_I_,__VA_ARGS__)(__VA_ARGS__),BOOST_PP_EMPTY())
+# else
+#  define CTI_I(...) BOOST_PP_OVERLOAD(CTI_I_,__VA_ARGS__)(__VA_ARGS__)
+# endif
+#endif
