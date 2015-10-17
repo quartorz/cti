@@ -9,7 +9,7 @@
 
 namespace cti{
 	namespace literals{
-		namespace double_interval{
+		inline namespace double_interval{
 			template <char ... Chars>
 			constexpr auto operator "" _di()
 			{
@@ -25,8 +25,6 @@ namespace cti{
 				return ::cti::interval<inf_type, sup_type>{};
 			}
 		}
-
-		using double_interval::operator "" _di;
 	}
 }
 
